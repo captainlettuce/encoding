@@ -71,12 +71,27 @@ func Unmarshal(data []string, out interface{}) error {
 			if valueStruct.Field(i).IsValid() && valueStruct.Field(i).Kind() == reflect.String {
 				valueStruct.Field(i).SetString(val)
 			}
-		} else if opt[0] == "int" {
+			continue
+		}
+		switch opt[0] {
+		case "int64":
 			v, err := strconv.ParseInt(envVars[name], 10, 64)
 			if err != nil {
 				return err
 			}
 			valueStruct.Field(i).SetInt(v)
+		case "uint64":
+			v, err := strconv.ParseUint(envVars[name], 10, 64)
+			if err != nil {
+				return err
+			}
+			valueStruct.Field(i).SetUint(v)
+		case "bool":
+			v, err := strconv.ParseBool(envVars[name])
+			if err != nil {
+				return err
+			}
+			valueStruct.Field(i).SetBool(v)
 		}
 	}
 

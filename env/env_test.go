@@ -1,33 +1,36 @@
 package env
 
 import (
-	"log"
 	"reflect"
 	"testing"
 )
 
 type testStruct struct {
-	A int64  `env:"test,int"`
+	A int64  `env:"test,int64"`
 	B string `env:"test2"`
 	C string `env:"test3,string"`
+	D bool   `env:"test4,bool"`
 }
 
 var TestEnv = []string{
 	"test=test",
 	"test2=te=st",
 	"test3",
+	"test4=trulse",
 }
 
 var TestStruct = testStruct{
 	A: 1,
 	B: "test",
 	C: "test",
+	D: false,
 }
 
 var testEnv = []string{
 	"test=1",
 	"test2=stoff",
 	"test3=",
+	"test4=true",
 }
 
 func TestSplitEnv(t *testing.T) {
@@ -80,7 +83,7 @@ func TestParseTag(t *testing.T) {
 	f, _ := x.FieldByName("A")
 	tn, _ := f.Tag.Lookup(tagName)
 	name, opt := parseTag(tn)
-	if name != "test" || opt[0] != "int" {
+	if name != "test" || opt[0] != "int64" {
 		t.Errorf("parseTag(TestStruct.a) = %s, %s. Wanted: %s, %s", name, opt, "test", "int")
 	}
 
@@ -109,5 +112,4 @@ func TestUnmarshal(t *testing.T) {
 	if ts.A != 1 {
 		t.Errorf("unmarshal(testEnv, testStruct) A = %d, wanted: %d", ts.A, 1)
 	}
-	log.Printf("%+v", ts)
 }
