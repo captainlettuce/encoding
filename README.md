@@ -1,5 +1,6 @@
 # encoding
 Go encoding/json style unmarshaling of environment variables to struct. 
+
 Currently returns error if struct field is not found in environment
 
 # Types
