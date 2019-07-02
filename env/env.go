@@ -56,7 +56,7 @@ func Unmarshal(data []string, out interface{}) error {
 		tn, ok := typeStruct.Field(i).Tag.Lookup(tagName)
 		if !ok {
 			// ToDo, do type assertion on struct field and see if value exists with key=FieldName
-			log.Printf("Error! The package is not inferring by struct type yet. Skipping")
+			log.Printf("Error! The package is not inferring by struct type yet. Skipping: %s", tagName)
 			continue
 		}
 		name, opt := parseTag(tn)
@@ -64,7 +64,7 @@ func Unmarshal(data []string, out interface{}) error {
 		val, ok := envVars[name]
 		if len(opt) == 0 || opt[0] == "string" {
 			if !ok {
-				return fmt.Errorf("can not find required value")
+				return fmt.Errorf("can not find required value: '%s'", name)
 			}
 
 			// We assume string for now, see comment above
