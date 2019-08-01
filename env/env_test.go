@@ -6,6 +6,8 @@ import (
 )
 
 type testStruct struct {
+	K map[string]bool
+	U []byte `env:"u,b64"`
 	A int64  `env:"test,int64"`
 	B string `env:"test2"`
 	C string `env:"test3,string"`
@@ -20,13 +22,21 @@ var TestEnv = []string{
 }
 
 var TestStruct = testStruct{
+	K: map[string]bool{
+		"asdf": true,
+		"jkh":  false,
+		"ijo":  true,
+	},
+	U: []byte{49, 50, 51, 10},
 	A: 1,
-	B: "test",
-	C: "test",
-	D: false,
+	B: "stoff",
+	C: "",
+	D: true,
 }
 
 var testEnv = []string{
+	"u=MTIzCg==",
+	"K=asdf:true;jkh:false;ijo:true",
 	"test=1",
 	"test2=stoff",
 	"test3=",
@@ -111,5 +121,17 @@ func TestUnmarshal(t *testing.T) {
 	}
 	if ts.A != 1 {
 		t.Errorf("unmarshal(testEnv, testStruct) A = %d, wanted: %d", ts.A, 1)
+	}
+	if ts.B != TestStruct.B {
+		t.Errorf("unmarshal(testEnv, testStruct).B = %s, wanted: %s", ts.B, TestStruct.B)
+	}
+	if ts.D != TestStruct.D {
+		t.Errorf("unmarshal(testEnv, testStruct).D = %t, wanted: %t", ts.D, TestStruct.D)
+	}
+	if !reflect.DeepEqual(ts.K, TestStruct.K) {
+		t.Errorf("unmarshal(testEnv, testStruct).K = %+v, wanted: %+v", ts.K, TestStruct.K)
+	}
+	if !reflect.DeepEqual(ts.U, TestStruct.U) {
+		t.Errorf("unmarshal(testEnv, testStruct).U = %+v, wanted: %+v", ts.U, TestStruct.U)
 	}
 }

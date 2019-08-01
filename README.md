@@ -9,7 +9,10 @@ Currently supported types:
 string
 bool
 int64
+int
 uint64
+[]byte
+map[string]bool
 ```
 
 # Syntax
@@ -17,6 +20,7 @@ uint64
 /* Environment variables:
 v1=Yolo
 v2=1312
+VALUE4=swag
 */
 
 import (
@@ -25,8 +29,10 @@ import (
 )
 
 type someStruct struct {
-    Value1 string `env:"v1"` // If no type tag is given it's assumed to be a string
-    Value2 uint64 `env:"v2,uint64"`
+    Value1 string `env:"v1"`
+    Value2 uint64 `env:"v2"`
+    Value3 bool   `env:"-"` // '-' ignores field
+    Value4 string           // If no name is given, field name is assumed in all caps, i.e VALUE4
 }
 
 func example() {
@@ -38,14 +44,12 @@ func example() {
     }
   
     println("%+v", ss)
-    // &{Value1: Yolo, Value2: 1312}
+    // &{Value1: "Yolo", Value2: 1312, Value3: false, Value4: "swag"}
 }
 
 ```
 
 # ToDo
-Currently not inferring name and type from struct definition. I.e. Tags are neccessary.
-
 Add support for all primitives
 
 Add support for slice/array and maps
