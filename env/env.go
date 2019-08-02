@@ -100,7 +100,7 @@ func Unmarshal(data []string, out interface{}) error {
 
 		case "map[string]bool":
 			m := make(map[string]bool)
-			strSlice := strings.Split(envVars[typeStruct.Field(i).Name], ";")
+			strSlice := strings.Split(envVars[name], ";")
 
 			for _, subStr := range strSlice {
 				kv := strings.Split(subStr, ":")
