@@ -105,6 +105,7 @@ func Unmarshal(data []string, out interface{}) error {
 			for _, subStr := range strSlice {
 				kv := strings.Split(subStr, ":")
 				if len(kv) != 2 {
+					log.Printf("%+v", kv)
 					return fmt.Errorf("'%s' is formatted incorrectly", typeStruct.Field(i).Name)
 				}
 				v, err := strconv.ParseBool(kv[1])
@@ -131,6 +132,5 @@ func Unmarshal(data []string, out interface{}) error {
 		}
 
 	}
-	log.Printf("Data: %+v", out)
 	return nil
 }
