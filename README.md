@@ -13,6 +13,7 @@ int
 uint64
 []byte
 map[string]bool
+[]string
 ```
 
 # Syntax
@@ -21,6 +22,7 @@ map[string]bool
 v1=Yolo
 v2=1312
 VALUE4=swag
+VALUE5=string1,string2
 */
 
 import (
@@ -33,6 +35,7 @@ type someStruct struct {
     Value2 uint64 `env:"v2"`
     Value3 bool   `env:"-"` // '-' ignores field
     Value4 string           // If no name is given, field name is assumed in all caps, i.e VALUE4
+    Value5 []string
 }
 
 func example() {
@@ -44,7 +47,7 @@ func example() {
     }
   
     println("%+v", ss)
-    // &{Value1: "Yolo", Value2: 1312, Value3: false, Value4: "swag"}
+    // &{Value1: "Yolo", Value2: 1312, Value3: false, Value4: "swag", Value5: []string{"string1", "string2"}}
 }
 
 ```

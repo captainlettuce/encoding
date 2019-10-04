@@ -7,11 +7,12 @@ import (
 
 type testStruct struct {
 	K map[string]bool
-	U []byte `env:"u,b64"`
-	A int64  `env:"test,int64"`
-	B string `env:"test2"`
-	C string `env:"test3,string"`
-	D bool   `env:"test4,bool"`
+	U []byte   `env:"u,b64"`
+	A int64    `env:"test,int64"`
+	B string   `env:"test2"`
+	C string   `env:"test3,string"`
+	D bool     `env:"test4,bool"`
+	M []string `env:"test5"`
 }
 
 var TestEnv = []string{
@@ -19,6 +20,7 @@ var TestEnv = []string{
 	"test2=te=st",
 	"test3",
 	"test4=trulse",
+	"test5=en,se",
 }
 
 var TestStruct = testStruct{
@@ -32,6 +34,7 @@ var TestStruct = testStruct{
 	B: "stoff",
 	C: "",
 	D: true,
+	M: []string{"en", "se"},
 }
 
 var testEnv = []string{
@@ -41,6 +44,7 @@ var testEnv = []string{
 	"test2=stoff",
 	"test3=",
 	"test4=true",
+	"test5=en,se",
 }
 
 func TestSplitEnv(t *testing.T) {
@@ -133,5 +137,9 @@ func TestUnmarshal(t *testing.T) {
 	}
 	if !reflect.DeepEqual(ts.U, TestStruct.U) {
 		t.Errorf("unmarshal(testEnv, testStruct).U = %+v, wanted: %+v", ts.U, TestStruct.U)
+	}
+
+	if !reflect.DeepEqual(ts.M, TestStruct.M) {
+		t.Errorf("unmarshal(testEnv, testStruct).M = %+v, wanted: %+v", ts.M, TestStruct.M)
 	}
 }

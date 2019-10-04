@@ -126,6 +126,12 @@ func Unmarshal(data []string, out interface{}) error {
 					valueStruct.Field(i).SetBytes(bytes)
 				}
 			}
+		case "[]string":
+			if len(opt) > 0 {
+				return fmt.Errorf("could not understand option/s: %+v", opt)
+			}
+			slice := strings.Split(envVars[name], ",")
+			valueStruct.Field(i).Set(reflect.ValueOf(slice))
 
 		}
 
